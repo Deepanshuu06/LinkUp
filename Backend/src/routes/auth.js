@@ -61,7 +61,10 @@ authRouter.post("/login", async (req, res) => {
     }
 
     //comparing password through bcrypt
-    const isPasswordValid = user.validatePassword(password);
+    const isPasswordValid = await user.validatePassword(password);
+
+    // console.log(isPasswordValid);
+    
     if (isPasswordValid) {
       // create a JWT Token
       const token = await user.getJWT();
@@ -79,12 +82,15 @@ authRouter.post("/login", async (req, res) => {
 });
 
 authRouter.post("/logout", async (req, res) => {
-    try {
-        res.clearCookie("token");
-        res.send("Logout Successful");
-    } catch (error) {
-        res.status(500).send("Unable to logOut " + error.message);
-    }
+  try {
+    res.clearCookie("token");
+    res.send("Logout Successful");
+  } catch (error) {
+    res.status(500).send("Unable to logOut " + error.message);
+  }
 });
+
+
+authRouter.post("/forgotpassword", async (req, res) => {});
 
 module.exports = authRouter;

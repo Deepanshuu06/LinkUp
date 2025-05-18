@@ -64,7 +64,7 @@ authRouter.post("/login", async (req, res) => {
     const isPasswordValid = await user.validatePassword(password);
 
     // console.log(isPasswordValid);
-    
+
     if (isPasswordValid) {
       // create a JWT Token
       const token = await user.getJWT();
@@ -89,7 +89,6 @@ authRouter.post("/logout", async (req, res) => {
     res.status(500).send("Unable to logOut " + error.message);
   }
 });
-
 
 authRouter.post("/forgotpassword", async (req, res) => {});
 

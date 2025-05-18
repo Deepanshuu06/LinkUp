@@ -63,7 +63,20 @@ profileRouter.post("/change-password", userAuth, async (req, res) => {
   try {
     const { oldPassword, newPassword } = req.body;
     const user = req.user;
-
+    const requiredFields = ["oldPassword", "newPassword"];
+    const requestFields = Object.keys(req.body);
+    const hasAllRequiredFields = requiredFields.every((fields) =>
+      requestFields.includes(fields)
+    );
+    const hasOnlyValidFields = requestFields.every((fields) =>
+      requiredFields.includes(fields)
+    );
+    if (!hasAllRequiredFields || !hasOnlyValidFields) {
+      return res.status(400).send("Invalid fields in body");
+    }
+    if (!oldPassword || !newPassword) {
+      return res.status(400).send("Old and new passwords are required");
+    }
     const isPasswordValid = await user.validatePassword(oldPassword);
     if (!isPasswordValid) {
       return res.status(400).send("Invalid old password");

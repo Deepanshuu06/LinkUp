@@ -70,4 +70,52 @@ requestRouter.post(
   }
 );
 
+requestRouter.post("/review/:status/:requestId", userAuth, async (req, res) => {
+  try {
+    const { status, requestId } = req.params;
+    const loggedInUser = req.user;
+
+    // checking the status valid
+    // checking the requestId is valid
+    // is UserLogged  === toUserId match
+    // if the status was intrested then only user can review the request
+    // if the request is in ignroed state then no one can change the status
+
+    const allowedStatus = ["Accepted", "Rejected"];
+    if (!allowedStatus.includes(status)) {
+      return res.status(404).json({
+        tyoe: "error",
+        message: "Status Not Allowed",
+      });
+    }
+
+    
+
+    const connectionRequest = await ConnectionRequest.findOne({
+      _id: requestId,
+      toUserId:loggedInUser._id,
+      status: "Interested",
+    });
+
+
+    
+    if (!connectionRequest) {
+      return res.status(404).json({
+        tyoe: "error",
+        message: "Connection Request Not Found",
+      });
+    }
+
+    connectionRequest.status = status;
+    const data = await connectionRequest.save();
+
+    res.json({
+      message: "Connection Request " + status,
+      data,
+    });
+  } catch (error) {
+    res.status(400).send("Unable to review request " + error.message);
+  }
+});
+
 module.exports = requestRouter;

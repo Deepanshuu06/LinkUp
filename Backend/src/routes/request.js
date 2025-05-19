@@ -2,7 +2,7 @@ const express = require("express");
 const { userAuth } = require("../middleware/auth");
 const requestRouter = express.Router();
 const ConnectionRequest = require("../models/connectionRequest");
-const User = require("../models/user")
+const User = require("../models/user");
 
 requestRouter.post(
   "/request/send/:status/:toUserId",
@@ -20,17 +20,16 @@ requestRouter.post(
           message: "Invalid status type " + status,
         });
       }
-      
-      
-     if(fromUserId.toString() === toUserId){
+
+      if (fromUserId.toString() === toUserId) {
         return res.status(400).json({
           message: "You can not send request to yourself",
         });
       }
 
-      const isToUserExist = await User.findById(toUserId)
-      if(!isToUserExist){
-         return res.status(404).json({
+      const isToUserExist = await User.findById(toUserId);
+      if (!isToUserExist) {
+        return res.status(404).json({
           message: "User not Found",
         });
       }
@@ -56,7 +55,13 @@ requestRouter.post(
       const data = await connectionRequest.save();
 
       res.json({
-        message: "Connection request sent Successfully",
+        message:
+          req.user.firstName +
+          " is " +
+          status +
+          " in " +
+          isToUserExist.firstName,
+        status: "success",
         data,
       });
     } catch (error) {

@@ -5,25 +5,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { isLoggedIn, setUser } from "@/utils/slices/userSlice";
 
 
 export function LoginForm({ className, ...props }) {
   const [email, setEmail] = useState("rimjhim@gmail.com");
   const [password, setPassword] = useState("Jhimjhim@18");
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
-e.preventDefault();
+    e.preventDefault();
     try {
-      
       await axios
         .post("http://localhost:3000/login", {
           email,
           password,
-        },{withCredentials: true})
+        }, { withCredentials: true })
         .then((response) => {
+          dispatch(setUser(response.data.data) , isLoggedIn(true));
           console.log("Login successful:", response.data);
         });
-
-        
     } catch (error) {
       console.error("Login failed:", error);
     }

@@ -6,7 +6,7 @@ import Body from "./body";
 import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
 import { SignupForm } from "./components/SignupForm";
-
+import Profile from "./components/Profile";
 
 const App = () => {
   return (
@@ -15,9 +15,9 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Body />}>
-              {/* <Route index element={<LoginForm />} /> */}
               <Route path="/login" element={<LoginForm />} />
               <Route path="/signup" element={<SignupForm/>} />
+              <Route path="/profile" element={<Profile/>} />
             </Route>
           </Routes>
         </BrowserRouter>

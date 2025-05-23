@@ -8,6 +8,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser, isLoggedIn } from "@/utils/slices/userSlice";
 import { Link } from "react-router";
+import { BASE_URL } from "@/constants";
 
 export function SignupForm({ className, ...props }) {
   const [formData, setFormData] = useState({
@@ -34,7 +35,7 @@ export function SignupForm({ className, ...props }) {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3000/signup",
+        `${BASE_URL}/signup`,
         formData,
         { withCredentials: true }
       );

@@ -8,6 +8,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { isLoggedIn, setUser } from "@/utils/slices/userSlice";
 import { Link, useNavigate } from "react-router";
+import { BASE_URL } from "@/constants";
 
 
 export function LoginForm({ className, ...props }) {
@@ -20,7 +21,7 @@ export function LoginForm({ className, ...props }) {
     e.preventDefault();
     try {
       await axios
-        .post("http://localhost:3000/login", {
+        .post(`${BASE_URL}/login`, {
           email,
           password,
         }, { withCredentials: true })

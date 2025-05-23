@@ -3,16 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { isLoggedIn, setUser } from "@/utils/slices/userSlice";
+import { Link, useNavigate } from "react-router";
 
 
 export function LoginForm({ className, ...props }) {
   const [email, setEmail] = useState("rimjhim@gmail.com");
   const [password, setPassword] = useState("Jhimjhim@18");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -29,6 +32,13 @@ export function LoginForm({ className, ...props }) {
       console.error("Login failed:", error);
     }
   };
+  const isUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
+  useEffect(()=>{
+    if(isUserLoggedIn){
+      navigate("/");
+    }
+  },[ isUserLoggedIn , navigate])
 
   return (
     <div
@@ -37,9 +47,9 @@ export function LoginForm({ className, ...props }) {
         className
       )}
       {...props}>
-      <div className="flex flex-col gap-6 w-full max-w-4xl">
+      <div className="flex flex-col gap-6 w-full max-w-lg mx-auto">
         <Card className="overflow-hidden p-0">
-          <CardContent className="grid p-0 md:grid-cols-2">
+          <CardContent className="grid p-0 md:grid-cols-1">
             <form className="p-6 md:p-8">
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-center text-center">
@@ -118,19 +128,14 @@ export function LoginForm({ className, ...props }) {
                 </div>
                 <div className="text-center text-sm">
                   Don&apos;t have an account?{" "}
-                  <a href="#" className="underline underline-offset-4">
+                
+                  <Link to={"/signup"} className="underline underline-offset-4">
                     Sign up
-                  </a>
+                  </Link>
                 </div>
               </div>
             </form>
-            <div className="bg-muted relative hidden md:block">
-              <img
-                src="https://img.freepik.com/premium-vector/3d-user-login-form-page_169241-6920.jpg"
-                alt="Image"
-                className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-              />
-            </div>
+           
           </CardContent>
         </Card>
 

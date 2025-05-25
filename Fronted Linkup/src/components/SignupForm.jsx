@@ -34,11 +34,9 @@ export function SignupForm({ className, ...props }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `${BASE_URL}/signup`,
-        formData,
-        { withCredentials: true }
-      );
+      const response = await axios.post(`${BASE_URL}/signup`, formData, {
+        withCredentials: true,
+      });
       dispatch(setUser(response.data.data));
       dispatch(isLoggedIn(true));
       setFormData({
@@ -162,7 +160,6 @@ export function SignupForm({ className, ...props }) {
 
                 <div className="text-center text-sm">
                   Already have an account?{" "}
-                 
                   <Link to="/login" className="underline underline-offset-4">
                     Log in
                   </Link>
